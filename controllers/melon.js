@@ -32,9 +32,19 @@ exports.melon_create_post = async function (req, res) {
 };
 
 // Handle melon delete form on DELETE.
-exports.melon_delete = function (req, res) {
-  res.send("NOT IMPLEMENTED: melon delete DELETE " + req.params.id);
-};
+exports.melon_delete = async function(req, res) { 
+  console.log("delete "  + req.params.id) 
+  try { 
+      result = await Melon.findByIdAndDelete( req.params.id) 
+      console.log("Removed " + result) 
+      res.send(result) 
+  } catch (err) { 
+      res.status(500) 
+      res.send(`{"error": Error deleting ${err}}`); 
+  } 
+};  
+
+
 
 // Handle melon update form on PUT.
 exports.melon_update_put = async function (req, res) {
@@ -78,5 +88,54 @@ exports.melon_view_all_Page = async function(req, res) {
   catch(err){ 
       res.status(500); 
       res.send(`{"error": ${err}}`); 
-  }   
+   }   
+}; 
+
+exports.melon_view_one_Page = async function(req, res) { 
+  console.log("single view for id "  + req.query.id) 
+  try{ 
+      result = await Melon.findById( req.query.id) 
+      res.render('melondetail',  
+{ title: 'Melon Detail', toShow: result }); 
+  } 
+  catch(err){ 
+      res.status(500) 
+      res.send(`{'error': '${err}'}`); 
+  } 
+}; 
+
+exports.melon_create_Page =  function(req, res) { 
+  console.log("create view") 
+  try{ 
+      res.render('meloncreate', { title: 'Melon Create'}); 
+  } 
+  catch(err){ 
+      res.status(500) 
+      res.send(`{'error': '${err}'}`); 
+  } 
+}; 
+
+exports.melon_update_Page =  async function(req, res) { 
+  console.log("update view for item "+req.query.id) 
+  try{ 
+      let result = await Melon.findById(req.query.id) 
+      res.render('melonupdate', { title: 'Melon Update', toShow: result }); 
+  } 
+  catch(err){ 
+      res.status(500) 
+      res.send(`{'error': '${err}'}`); 
+  } 
+}; 
+
+exports.melon_delete_Page = async function(req, res) { 
+  console.log("Delete view for id "  + req.query.id) 
+  try{ 
+      result = await Melon.findById(req.query.id) 
+      res.render('melondelete', { title: 'Melon Delete', toShow: 
+result }); 
+  } 
+  catch(err){ 
+      res.status(500) 
+      res.send(`{'error': '${err}'}`); 
+  } 
 }; 
