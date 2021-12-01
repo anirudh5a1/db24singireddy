@@ -26,6 +26,9 @@ exports.melon_create_post = async function (req, res) {
     if(document.price < 2 || document.price>99){
       throw new TypeError("Please add price in between 2 and 99")
     }
+    else if(document.Brand.length<=0){
+      throw new TypeError("Brand name is Empty")
+    }
     else{
       let result = await document.save();
       res.send(result);
