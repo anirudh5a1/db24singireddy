@@ -4,11 +4,17 @@ block content
   h1= title
   - let items = results; 
   div(class="container-fluid") 
-    div(class="row m-1") 
+    div(class="row m-1")
+      - let destination3 = `dispatch(\"/melon/create\")`
+      button.btn( class="btn btn-primary btn-sm", onclick= destination3) Create New Item
       each item in items  
-        - let destination = `dispatch(\"/melon/update?id=${item._id}\")` 
+        - let destination = `dispatch(\"/melon/update?id=${item._id}\")`
+        - let destination1 = `dispatch(\"/melon/detail?id=${item._id}\")`
+        - let destination2 = `dispatch(\"/melon/delete?id=${item._id}\")` 
         div(class="row-sm-2", class="m-1") Melon #{item.Brand}(#{item.size}) is #{item.price} 
-          button.btn( class="btn-primary ml-1", onclick= destination) Update 
+          button.btn( class="btn-primary ml-1", onclick= destination) Update
+          button.btn( class="btn btn-success m-2", onclick= destination1) Details
+          button.btn( class="btn btn-danger m-2", onclick= destination2) Delete 
    
   script. 
     function dispatch(path){ 

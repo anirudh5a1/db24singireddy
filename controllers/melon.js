@@ -23,8 +23,13 @@ exports.melon_create_post = async function (req, res) {
   document.price = req.body.price;
   console.log(req.body);
   try {
-    let result = await document.save();
-    res.send(result);
+    if(document.price < 2 || document.price>99){
+      throw new TypeError("Please add price in between 2 and 99")
+    }
+    else{
+      let result = await document.save();
+      res.send(result);
+    }
   } catch (err) {
     res.status(500);
     res.send(`{"error": ${err}}`);
